@@ -1,0 +1,11 @@
+syntax = 'proto3';
+
+service Upload {
+    rpc Fileup(stream Tdata) returns (stream Tdata) {}
+}
+
+message Tdata {
+    string data = 1;
+    int64 size = 2;
+    string name = 3;
+}
