@@ -7,7 +7,7 @@ waiting file..
 ```
 $python uploader.py -s
 ```
-upload file to waiting server 
+upload file to waiting server
 ```
 $python uploader.py filename -i 192.168.10.5
 ```
@@ -25,6 +25,15 @@ optional arguments:
   -h, --help      show this help message and exit
   -s, --serve     for serve file
   -i IP, --ip IP  ip address of uploading server
+```
+
+# Requirement
+* python3(>3.5)
+* pip
+
+# Install
+```
+pip install -r require.txt
 ```
 
 # License
