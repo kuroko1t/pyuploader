@@ -7,6 +7,7 @@ from concurrent import futures
 import base64
 from pprint import pprint
 import os
+import re
 
 class Upload(upload_pb2_grpc.UploadServicer):
 
@@ -28,8 +29,11 @@ class Upload(upload_pb2_grpc.UploadServicer):
                 file_exist = True
                 pass
             else:
-                os.mkdir(out_ite.name,exist_ok=True)
-                file_name = os.path.basename(out_ite.name)
+                if re.search('/',out_ite.name):
+                    os.makedirs(os.path.dirname(out_ite.name),exist_ok=True)
+                    file_name = out_ite.name
+                else:
+                    file_name = out_ite.name
                 with open(file_name, 'ab') as f:
                     f.write(binary_data)
             i += 1

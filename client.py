@@ -27,7 +27,7 @@ def getfile(path,chunksize):
 def run(tf_file, path, ip):
     channel = grpc.insecure_channel('{}:50053'.format(ip))
     stub = upload_pb2_grpc.UploadStub(channel)
-    print('client connected')
+    print(path)
 
     def stream():
         for tf in tf_file:
@@ -37,5 +37,5 @@ def run(tf_file, path, ip):
 
     def read_incoming():
         next(input_stream).name
-    for tf in tqdm(tf_file):
+    for tf in tf_file:
         read_incoming()

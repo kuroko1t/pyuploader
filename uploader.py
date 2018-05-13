@@ -8,6 +8,7 @@ from proto import upload_pb2
 from concurrent import futures
 import time
 import os
+import re
 
 def serve():
     fserver = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -20,37 +21,38 @@ def serve():
     while 1:
         time.sleep(1)
 
-def client_run(path, ip):
+def client_run(read_path, send_path, ip):
     chunksize = 1000000
     path = args.f
-    tf_file = client.getfile(path, chunksize)
-    #file_name = os.path.basename(path)
-    #client.run(tf_file, file_name, ip)
-    client.run(tf_file, path, ip)
-    print('done!')
+    tf_file = client.getfile(read_path, chunksize)
+    client.run(tf_file, send_path, ip)
 
 def client_all(paths, ip):
     if os.path.isdir(paths):
         dir_exist = True
-        base_dir = paths.split("/")[:-2]
-        if base_dir == "":
-            base_dir = paths.split("/")[:-3]
-        print(base_dir)
+        base_dir = paths.split("/")[:-1]
+        if paths.split("/")[-1] == "":
+            base_dir = paths.split("/")[:-2]
+        if not re.search('/$',paths):
+            paths = paths + '/'
         paths = [paths]
         while(dir_exist):
             dir_exist = False
             tmp_paths = []
+            tmp_write_paths = []
             for path in paths:
                 for files in os.listdir(path):
                     if os.path.isdir(path + files):
                         tmp_paths.append(path +  files + "/")
                         dir_exist = True
                     else:
-                        #print(path + files)
-                        pass
+                        read_path = path + files
+                        send_path = '/'.join((path + files).split('/')[len(base_dir):])
+                        client_run(read_path, send_path,ip)
             paths = tmp_paths
     else:
-        client_run(paths,ip)
+        send_path = os.path.basename(paths)
+        client_run(paths, send_path,ip)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
