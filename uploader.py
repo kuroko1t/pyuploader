@@ -32,9 +32,10 @@ def client_run(path, ip):
 def client_all(paths, ip):
     if os.path.isdir(paths):
         dir_exist = True
-        base_dir = paths.split("/")[-1]
+        base_dir = paths.split("/")[:-2]
         if base_dir == "":
-            base_dir = paths.split("/")[-2]
+            base_dir = paths.split("/")[:-3]
+        print(base_dir)
         paths = [paths]
         while(dir_exist):
             dir_exist = False
@@ -49,7 +50,7 @@ def client_all(paths, ip):
                         pass
             paths = tmp_paths
     else:
-        client_run(paths)
+        client_run(paths,ip)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
