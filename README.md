@@ -2,6 +2,9 @@
 Transfer file to another server.
 This script using grpc protocol.
 
+# gif
+![demo](https://github.com/kuroko1t/pyuploader/blob/master/doc/howto.gif)
+
 # Usage
 waiting file..
 ```
