@@ -24,10 +24,32 @@ def client_run(path, ip):
     chunksize = 1000000
     path = args.f
     tf_file = client.getfile(path, chunksize)
-    print('upload starting ...')
-    file_name = os.path.basename(path)
-    client.run(tf_file, file_name, ip)
+    #file_name = os.path.basename(path)
+    #client.run(tf_file, file_name, ip)
+    client.run(tf_file, path, ip)
     print('done!')
+
+def client_all(paths, ip):
+    if os.path.isdir(paths):
+        dir_exist = True
+        base_dir = paths.split("/")[-1]
+        if base_dir == "":
+            base_dir = paths.split("/")[-2]
+        paths = [paths]
+        while(dir_exist):
+            dir_exist = False
+            tmp_paths = []
+            for path in paths:
+                for files in os.listdir(path):
+                    if os.path.isdir(path + files):
+                        tmp_paths.append(path +  files + "/")
+                        dir_exist = True
+                    else:
+                        #print(path + files)
+                        pass
+            paths = tmp_paths
+    else:
+        client_run(paths)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -44,6 +66,7 @@ if __name__ == "__main__":
             serve()
     else:
         if args.ip:
-            client_run(args.f, args.ip)
+            #client_run(args.f, args.ip)
+            client_all(args.f, args.ip)
         else:
             print('please set ip adress')

@@ -28,7 +28,9 @@ class Upload(upload_pb2_grpc.UploadServicer):
                 file_exist = True
                 pass
             else:
-                with open(out_ite.name, 'ab') as f:
+                os.mkdir(out_ite.name,exist_ok=True)
+                file_name = os.path.basename(out_ite.name)
+                with open(file_name, 'ab') as f:
                     f.write(binary_data)
             i += 1
             if i == out_ite.size and not file_exist:
