@@ -2,6 +2,8 @@
 Transfer file to another server.
 This script using grpc protocol.
 
+feel free to isssue and pull requests
+
 # demo
 ![demo](https://github.com/kuroko1t/pyuploader/blob/master/doc/howto.gif)
 
